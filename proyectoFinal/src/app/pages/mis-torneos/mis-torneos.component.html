@@ -1,0 +1,53 @@
+<!--Start payment-history area -->
+<div class="payment-history-area bg-color area-padding top-margin">
+    <div class="container container-torneos">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="section-headline text-center">
+                    <h3>Torneos</h3>
+                    <p>Lista de Torneos de G2P</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="deposite-content">
+                    <div class="diposite-box">
+                        <div class="deposite-table">
+                            <table>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Torneo</th>
+                                    <th>Juego</th>
+                                    <!-- <th>Equipo</th> -->
+                                    <th>Reglas</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Puntos</th>
+                                    <th>Estado</th>
+                                </tr>
+                                <tr *ngFor="let torneoArray of torneoArray; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td><a (click)="goDetalle(torneoArray.fases, torneoArray.torneo_id)">{{torneoArray.nombre}}</a></td>
+                                    <td>{{torneoArray.juego_nombre}}</td>
+                                    <!-- <td><a (click)="goPerfilTeam(torneoArray.equipo_id)">
+                                        <img
+                                          src="{{ torneoArray.equipo_logo }}"
+                                          width="40px"
+                                          heigth="40px"
+                                          alt="" /></a>{{torneoArray.equipo_nombre}}</td> -->
+                                    <td>{{torneoArray.reglas_modo}}</td>
+                                    <td>{{torneoArray.fecha | date:'longDate'}}</td>
+                                    <td>{{torneoArray.hora}}</td>
+                                    <td>{{torneoArray.puntos}}</td>
+                                    <td><h6 [ngStyle]="{'color':getColor(torneoArray.estado)}">{{torneoArray.estado}}</h6></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>

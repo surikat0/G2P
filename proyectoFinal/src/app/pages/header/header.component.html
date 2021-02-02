@@ -1,0 +1,418 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+  <div class="d-flex w-25 logito-logo">
+    <a
+      class="navbar-brand animate__animated animate__rotateIn"
+      routerLink="/torneos"
+    >
+      <img
+        [src]="imageSrc"
+        width="60px"
+        style="position: absolute; top: -13px"
+      />
+    </a>
+  </div>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <i class="fa fa-bars fa-lg"></i>
+  </button>
+  <div
+    class="navbar-collapse collapse justify-content-center order-2 bg-dark"
+    id="navbarSupportedContent"
+  >
+    <ul
+      *ngIf="adminlogin"
+      class="navbar-nav justify-content-center bold-transform"
+    >
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/admin-partidos">partidos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/admin-torneos">torneos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/admin-teams">equipos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/admin-users">usuarios</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/admin-reglas">reglas</a>
+      </li>
+    </ul>
+    <ul
+      *ngIf="userinlogin"
+      class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center bold-transform"
+    >
+      <!-- <ul  class="navbar-nav "> -->
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/mis-equipos">mis equipos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/mis-torneos">mis torneos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/mis-partidas">mis partidos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link uppercase" routerLink="/mis-partidas"></a>
+      </li>
+    </ul>
+
+    <div *ngIf="!isLoggedIn()" class="header-right-link">
+      <a #registrateButton id="registrateButton" class="s-menu" data-toggle="modal" data-target="#registerModal"
+        >REGISTRATE</a
+      >
+      <a #entrarButton id="entrarButton" class="login-user" data-toggle="modal" data-target="#loginModal">
+        <i class="fa fa-user fa-lg"></i> <span class="entrar">ENTRAR</span>
+      </a>
+    </div>
+    <div *ngIf="isLoggedIn()" class="header-right-link login-logged">
+      <div class="login-user">
+        <img src="{{ g2pUser.url_perfil }}" routerLink="perfil-user" />
+        <div class="ag">
+          <div class="btn-group dropend">
+            <button
+              type="button"
+              class="btn btn-dark dropdown-toggle dropdown-toggle-split"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span class="name visually-hidden"
+                >{{ g2pUser.nombre }} {{ g2pUser.apellido }}</span
+              >
+            </button>
+            <ul class="dropdown-menu">
+              <li
+                _ngcontent-rwy-c57=""
+                class="nav-item"
+                style="text-align: center"
+              >
+                <a class="editprofile" (click)="goPerfil()">Mi CUENTA</a>
+              </li>
+            </ul>
+          </div>
+          <!-- <a class="name" routerLink="perfil-user">{{g2pUser.nombre}} {{g2pUser.apellido}}</a> -->
+          <div class="bajo">
+            <a class="editprofile" (click)="goPerfil()"
+              >@{{ g2pUser.nickname }}</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isLoggedIn()" class="header-right-link-logout login-logged">
+      <a data-toggle="modal" data-target="#logoutModal"
+        ><i
+          _ngcontent-unf-c57=""
+          class="fas fa-power-off fa-lg"
+          style="color: #ff09d6"
+        ></i
+      ></a>
+    </div>
+  </div>
+</nav>
+<!-- MODAL REGISTER -->
+<div
+#registrateButton
+  class="modal fade"
+  id="registerModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="registerModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">REGISTRATE</h5>
+        <button
+          type="button"
+          class="close"
+          #closeRegister
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="myForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="nickname"
+              placeholder="G2P ID (Nombre de Usuario)"
+              formControlName="nickname"
+              [ngClass]="{ 'is-invalid': myForm.get('nickname').invalid }"
+              #nickname
+            />
+            <p
+              *ngIf="
+                myForm.controls.nickname.hasError &&
+                !myForm.controls.nickname.hasError('uniqueNickname')
+              "
+              class="invalid-feedback"
+            >
+              El nombre de usuario debe tener min 4 caracteres
+            </p>
+            <p
+              *ngIf="myForm.controls.nickname.hasError('uniqueNickname')"
+              class="invalid-feedback"
+            >
+              Este usuario ya existe
+            </p>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              placeholder="Nombre"
+              formControlName="nombre"
+              [ngClass]="{ 'is-invalid': !myForm.get('nombre').valid }"
+              #nombre
+            />
+            <p *ngIf="myForm.get('nombre').invalid" class="invalid-feedback">
+              El nombre debe tener max 30 caract
+            </p>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="apellido"
+              placeholder="Apellido"
+              formControlName="apellido"
+              [ngClass]="{ 'is-invalid': !myForm.get('apellido').valid }"
+              #apellido
+            />
+            <p *ngIf="myForm.get('apellido').invalid" class="invalid-feedback">
+              El apellido debe tener max 30 caract
+            </p>
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control"
+              id="nacimiento"
+              placeholder="Fecha de Nacimiento"
+              formControlName="nacimiento"
+              [ngClass]="{
+                'is-invalid':
+                  myForm.controls.nacimiento.invalid &&
+                  (myForm.controls.nacimiento.dirty ||
+                    myForm.controls.nacimiento.touched)
+              }"
+              #nacimiento
+            />
+            <p
+              *ngIf="myForm.get('nacimiento').invalid"
+              class="invalid-feedback"
+            >
+              Ingresa tu fecha de nacimiento
+            </p>
+          </div>
+          <div class="form-group">
+            <input
+              type="email"
+              class="form-control"
+              id="correo"
+              placeholder="Direccion de Correo"
+              formControlName="correo"
+              [ngClass]="{ 'is-invalid': !myForm.get('correo').valid }"
+              #correo
+            />
+            <p
+              *ngIf="
+                myForm.controls.correo.hasError &&
+                !myForm.controls.correo.hasError('uniqueEmail')
+              "
+              class="invalid-feedback"
+            >
+              Debe introducir un email correcto.
+            </p>
+            <p
+              *ngIf="myForm.controls.correo.hasError('uniqueEmail')"
+              class="invalid-feedback"
+            >
+              Este correo ya existe
+            </p>
+          </div>
+          <div class="form-group">
+            <select
+              name="country"
+              class="form-control"
+              id="nacionalidad"
+              #nacionalidad
+            >
+              <option value="">Selecciona un país</option>
+              <option
+                *ngFor="let nationality of nationalities"
+                [value]="nationality"
+              >
+                {{ nationality }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="contrasena"
+              placeholder="Crear ontraseña"
+              formControlName="contrasena"
+              [ngClass]="{ 'is-invalid': !myForm.get('contrasena').valid }"
+              #contrasena
+            />
+            <p
+              *ngIf="myForm.get('contrasena').invalid"
+              class="invalid-feedback"
+            >
+              Debe introducir una clave min 8 caracteres y máximo 20.
+            </p>
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="repetir_contrasena"
+              placeholder="Confirmar contraseña"
+              [ngClass]="{
+                'is-invalid': !myForm.get('repetir_contrasena').valid
+              }"
+            />
+            <p
+              *ngIf="myForm.controls.repetir_contrasena.hasError"
+              class="invalid-feedback"
+            >
+              Las contraseñas no coinciden.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="but-cancel" data-dismiss="modal"
+          aria-label="Close">CANCELAR</a>
+          <button
+            type="submit"
+            class="but-ok"
+            (click)="
+              registerUsuario(
+                nickname.value,
+                nombre.value,
+                apellido.value,
+                nacimiento.value,
+                correo.value,
+                nacionalidad.value,
+                contrasena.value
+              )
+            "
+            [disabled]="myForm.invalid"
+          >
+            REGISTRATE
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL REGISTER -->
+
+<!-- MODAL LOGIN -->
+<div #entrarButton
+  class="modal fade"
+  id="loginModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="loginModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">INGRESAR</h5>
+        <button
+          type="button"
+          class="close"
+          #closeLogin
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="nickname_login"
+              placeholder="G2P ID (Nombre de Usuario)"
+              #nickname_login
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="contrasena_login"
+              placeholder="Contraseña"
+              #contrasena_login
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="but-ok"
+            (click)="loginUsuario(nickname_login.value, contrasena_login.value)"
+          >
+            ENTRAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL LOGIN -->
+<!--Modal cerrar sesion-->
+<div
+  class="modal fade"
+  id="logoutModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="loginModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">¿Desea cerrar sesión?</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="s-menu-mobile-register"
+          data-dismiss="modal"
+          (click)="logout()"
+          >Confirmar</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

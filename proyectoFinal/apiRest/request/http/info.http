@@ -1,0 +1,50 @@
+###
+GET {{host}}/equipos
+Accept: application/json
+
+###
+GET {{host}}/torneo?id=86
+Accept: application/json
+
+###
+GET {{host}}/partidos-torneo/3
+Accept: application/json
+
+###
+GET {{host}}/equipos-usuario?userId=86
+Accept: application/json
+
+###
+POST {{host}}/equipos
+Content-Type: application/json
+
+{
+  "nombre": "Test",
+  "capitan": 86,
+  "juego_id": 1
+}
+
+###
+POST {{host}}/equipos-torneos
+Content-Type: application/json
+
+{
+  "torneo_id": 3,
+  "fase": "octavos",
+  "equipo_id": 49
+}
+
+###
+PUT {{host}}/partidos-resultados
+Content-Type: application/json
+
+{
+  "partido_id": 26,
+  "fase": "8vo",
+  "posicion": 1,
+  "torneo_id": 3,
+  "equipo_first": 7,
+  "equipo_second": 35,
+  "resultado_first": 0,
+  "resultado_second": 4
+}

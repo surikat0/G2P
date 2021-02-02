@@ -1,0 +1,395 @@
+<div class="top-margin"></div>
+
+<div class="container px-4">
+  <div class="row gx-5 center-all" style="justify-content: center">
+    <div class="col-lg-12 d-flex justify-content-center">
+      <div
+        class="p-3 bg-dark"
+        style="
+          margin-right: 20px;
+          margin-bottom: 20px;
+          letter-spacing: 3px;
+          width:75%;
+          border-radius: 7px 7px 7px 7px;
+          border: 2px solid #171c3e;
+          box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+          color: #fff;
+        "
+      >
+        <span
+          _ngcontent-snb-c79=""
+          style="padding-left: 20px; font-size: 16px; font-weight: bolder"
+          >PERFIL DE USUARIO</span
+        >
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-11 col-xs-3">
+      <div class="row">
+    
+        <div class="col-lg-12 box-1">
+            <div
+            class="p-3 bg-dark"
+            style="margin-right: 20px;margin-bottom: 40px;border-radius: 7px 7px 7px 7px;border: 2px solid #171c3e;/* margin: 10px 60px 10px 60px; */box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);">
+            <div class="contenedor-perfil">
+              <img class="image-perfil-user" src="{{ g2pUserPerfil.url_perfil }}" />
+              <div class="title-perfil-user">
+                {{ g2pUserPerfil.nombre }} {{ g2pUserPerfil.apellido }}
+              </div>
+              <p>{{ g2pUserPerfil.nickname }}</p>
+              <div
+                class="button-editar-perfil"
+                data-toggle="modal"
+                data-target="#editPerfilModal"
+              >
+                editar perfil&nbsp;&nbsp;<i
+                  class="fa fa-edit fa-lg"
+                  style="float: right; margin-top: 3px"
+                ></i>
+              </div>
+              <div class="title-description-user">SOBRE EL JUGADOR</div>
+              <p>{{ g2pUserPerfil.biografia }}</p>
+         
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e;
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+              cursor: pointer;
+              color: #fff;
+              " (click)="goBack()" ><i class="fa fa-chevron-circle-left"></i> <span _ngcontent-snb-c79="" style="
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 600;
+">VOLVER ATRAS</span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5 col-sm-11 col-xs-3">
+      <div class="row">
+        <div class="col-lg-12 box-1">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e; /* margin: 10px 60px 10px 60px; */
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+            "
+          >
+            <div class="container-diferent">
+              <div class="title-stadics">EQUIPOS</div>
+
+              <div class="contenedor-stadics">
+                <div class="container d-flex justify-content-center">
+                  <div class="row align-items-start">
+                    <div
+                      class="col"
+                      *ngFor="let jugadores of jugadores; let i = index"
+                    >
+                      <a
+                        (click)="goPerfil(jugadores.equipo_id)"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="@{{ jugadores.nombre }}"
+                      >
+                        <img
+                          class="equipo-pertenece-imagen"
+                          src="{{ jugadores.logo }}"
+                      /></a>
+                    </div>
+                    <p *ngIf="jugadores.length === 0">Este usuario no pertenece a ningun equipo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e; /* margin: 10px 60px 10px 60px; */
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+            "
+          >
+            <div class="container-diferent">
+              <div class="title-stadics">ESTADISTICAS</div>
+
+              <canvas
+                baseChart
+                width="50%"
+                [datasets]="pieChartData"
+                [labels]="pieChartLabels"
+                [options]="pieChartOptions"
+                [colors]="pieChartColors"
+                [chartType]="pieChartType"
+                [plugins]="pieChartPlugins"
+              ></canvas>
+              <button #gChart (click)="shuffeData()" style="display: none">
+                hola
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  EDITAR USER -->
+
+<!--  EDITAR USER -->
+<div
+  class="modal fade"
+  id="editPerfilModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editPerfilModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPerfilModalLabel">EDITAR PERFIL</h5>
+        <button
+          type="button"
+          class="close"
+          #closeEdit
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="myFormEdit">
+        <div class="modal-body">
+          <div class="form-group" style="display: none">
+            <input
+              type="text"
+              class="form-control"
+              id="usuario_idEdit"
+              placeholder="G2P ID [{{ g2pUserPerfil.usuario_id }}]"
+              value="{{ g2pUserPerfil.usuario_id }}"
+              #usuario_id
+            />
+          </div>
+
+          <div class="form-group">
+
+            <div class="inputfile-box">
+              <input type="file" id="file" class="inputfile" aria-describedby="upload-photo"
+              aria-label="Upload"
+              name="avatar"
+              (change)="fileChange($event)"
+              placeholder="Actualiza tu foto"
+              #uploadfoto>
+              <label for="file" style="width:100%">
+                <span id="file-name" class="file-box">{{msg2}}</span>
+                <span class="file-button">
+                  <i class="fa fa-upload" aria-hidden="true"></i>
+                  Select File
+                </span>
+              </label>
+            </div>
+          </div>
+          <div
+            [innerHtml]="msg"
+            *ngIf="msg"
+            style="margin-top: 0.25rem; font-size: 80%; color: #dc3545"
+          ></div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="nicknameEdit"
+              placeholder="G2P ID [{{ g2pUserPerfil.nickname }}]"
+              #nicknameEdit
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="nombreEdit"
+              placeholder="{{ g2pUserPerfil.nombre }}"
+              #nombreEdit
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="apellidoEdit"
+              placeholder="{{ g2pUserPerfil.apellido }}"
+              #apellidoEdit
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control"
+              id="nacimientoEdit"
+              placeholder="" data-date="" data-date-format="DD/MM/YYYY" value="{{g2pUserPerfil.nacimiento}}"
+              #nacimientoEdit
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="email"
+              class="form-control"
+              id="correoEdit"
+              placeholder="{{ g2pUserPerfil.correo }}"
+              #correoEdit
+            />
+          </div>
+    
+          <div class="form-group">
+            <select
+              name="country"
+              class="form-control"
+              id="nacionalidadEdit"
+              #nacionalidadEdit
+            >
+              <option value="">{{ g2pUserPerfil.nacionalidad }}</option>
+              <option
+                *ngFor="let nationalityEdit of nationalitiesEdit"
+                [value]="nationalityEdit"
+              >
+                {{ nationalityEdit }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              placeholder="{{ g2pUserPerfil.biografia }}"
+              id="biografia"
+              #biografiaEdit
+            >{{ g2pUserPerfil.biografia }}</textarea>
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="contrasenaEdit"
+              placeholder="Cambiar  contraseña"
+              formControlName="contrasenaEdit"
+              [ngClass]="{
+                'is-invalid': !myFormEdit.get('contrasenaEdit').valid
+              }"
+              #contrasenaEdit
+            />
+            <p
+              *ngIf="myFormEdit.get('contrasenaEdit').invalid"
+              class="invalid-feedback"
+            >
+              Debe introducir una clave min 8 caracteres y máximo 20.
+            </p>
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              id="repetir_contrasenaEdit"
+              class="form-control"
+              formControlName="repetir_contrasenaEdit"
+              placeholder="Confirmar contraseña"
+              [ngClass]="{
+                'is-invalid': !myFormEdit.get('repetir_contrasenaEdit').valid
+              }"
+            />
+            <p
+              *ngIf="!myFormEdit.get('repetir_contrasenaEdit').valid"
+              class="invalid-feedback"
+            >
+              Las contraseñas no coinciden.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a
+            class="s-menu-mobile-cancel"
+            data-toggle="modal"
+            data-target="#deleteUserModal"
+            >ELIMINAR PERFIL</a
+          >
+          <a
+            class="s-menu-mobile-register"
+            (click)="
+              editUser(
+                usuario_id.value,
+                nicknameEdit.value,
+                nombreEdit.value,
+                apellidoEdit.value,
+                nacimientoEdit.value,
+                correoEdit.value,
+                nacionalidadEdit.value,
+                biografiaEdit.value,
+                contrasenaEdit.value
+              )
+            "
+          >
+            GUARDAR
+        </a>
+        </div>
+      </form>
+      <!-- <div class="modal-footer">
+                <a class="s-menu-mobile-register" data-dismiss="modal">Aceptar</a>
+                <a class="s-menu-mobile-register" data-dismiss="modal">Borrar</a>
+            </div> -->
+    </div>
+  </div>
+</div>
+<!--Modal CONFIRMAR ELIMINACION-->
+<div
+  class="modal fade"
+  id="deleteUserModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteUserModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Eliminar {{g2pUserPerfil.nickname}}</h5>
+        <button
+          type="button"
+          class="close"
+          #closeDelete
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          ¿Estas seguro que deseas tu perfil?
+          <p style="color: #fff;">{{ g2pUserPerfil.nickname }} al hacer clic en <b>ELIMINAR</b> tu perfil se eliminara por completo</p>
+        </div>
+        <div class="modal-footer">
+          <a
+            class="s-menu-mobile-register"
+            (click)="deleteUser(usuario_id.value)"
+            >ELIMINAR</a
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

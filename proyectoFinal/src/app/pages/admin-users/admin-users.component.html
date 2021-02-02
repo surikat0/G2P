@@ -1,0 +1,180 @@
+<div class="payment-history-area bg-color area-padding top-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <h3>Usuarios</h3>
+          <p>Lista de usuarios de G2P</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="deposite-content">
+          <div class="diposite-box">
+            <div class="deposite-table">
+              <table>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>G2P ID</th>
+                  <!-- <th>Equipos</th> -->
+                  <th>Puntos</th>
+                  <th>Modificar</th>
+                </tr>
+                <tr *ngFor="let userall of userall; let i = index">
+                  <td id="getid" value="{{ i }}">{{ i + 1 }}</td>
+                  <td>
+                    <a (click)="goPerfil(userall.nickname)">
+                      <img
+                        src="{{ userall.url_perfil }}"
+                        width="40px"
+                        heigth="40px"
+                        alt=""
+                      />
+                      <!-- <img
+                        [src]="photoBan"
+                        width="40px"
+                        heigth="40px"
+                        alt=""
+                        *ngIf="yesBan"
+                      /> -->
+                      {{ userall.nombre }} {{ userall.apellido }}</a
+                    >
+                  </td>
+                  <td>{{ userall.nickname }}</td>
+                  <!-- <td *ngIf="userall.nombre_equipo != null">
+                    <a (click)="goPerfil(userall.nickname)">{{
+                      userall.nombre_equipo
+                    }}</a>
+                  </td>
+                  <td *ngIf="userall.nombre_equipo === null">SIN EQUIPO</td> -->
+                  <td>{{ userall.puntuacion }}</td>
+                  <td>
+                    <a
+                      data-toggle="modal"
+                      data-target="#editModal"
+                      class="edit-user"
+                      (click)="displayEdit(i)"
+                    >
+                      <i class="fa fa-edit fa-lg"></i>
+                    </a>
+                    &nbsp;&nbsp;
+                    <a
+                      data-toggle="modal"
+                      data-target="#deleteModal"
+                      class="delete-user"
+                      (click)="displayDelete(i)"
+                    >
+                      <i class="fa fa-trash fa-lg"></i>
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End payment-history area -->
+<!-- MODAL EDIT -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">EDITAR USUARIO</h5>
+        <button
+          type="button"
+          class="close"
+          #editAdmin
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
+              id="recipient-name"
+              [value]="userall[indexEdit].puntuacion"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div *ngIf="vertodo">
+          <a
+            class="s-menu-mobile-cancel"
+            *ngIf="notBan"
+            (click)="banned(userall[indexEdit].usuario_id, indexEdit)"
+            >BANNEAR</a
+          >
+          <a
+            class="s-menu-mobile-cancel"
+            *ngIf="yesBan"
+            (click)="banned(userall[indexEdit].usuario_id, indexEdit)"
+            >DESBANEAR</a
+          >
+        </div>
+        <!-- <a class="s-menu-mobile-cancel" (click)="isYesBan(indexEdit)">no</a> -->
+        <a class="s-menu-mobile-register">EDITAR</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL EDIT -->
+<!-- MODAL DELETE -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">ELIMINAR</h5>
+        <button
+          type="button"
+          class="close"
+          #deleteAdmin
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p>
+            ¿Desea eliminar el usuario <b>{{ userall[indexDelete].nickname }}</b
+            >?
+          </p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="s-menu-mobile-register"
+          (click)="deleteUser(userall[indexDelete].usuario_id, indexDelete)"
+          >ELIMINAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL DELETE -->

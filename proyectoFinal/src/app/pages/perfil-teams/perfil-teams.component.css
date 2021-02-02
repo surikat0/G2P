@@ -1,0 +1,123 @@
+/* * {
+    margin: 0px;
+    padding: 0px;
+} */
+/* 
+body {
+    background-color: #1f2550;
+    color: snow;
+}
+
+.padre {
+    display: flex;
+    width: 800px;       
+    height: 450px;
+    margin: auto;
+}
+
+
+.user {
+    background-color: #0D153D;
+    width: 350px;
+    margin-right: 50px;
+    border-radius: 5%;
+    text-align: center;
+}
+
+.logros {
+    background-color:#0D153D;
+    height: 180px;
+    border-radius: 5%;
+    margin-top: 25px;
+}
+
+.teams {
+    background-color: #0D153D;
+    height: 180px;
+    margin-top: 30px;
+    border-radius: 5%;
+}
+
+.container {
+
+        background:#1f2550;
+        height: 100vh;
+        width: 100vw;
+        display: flex;        
+        justify-content: center;
+}
+
+.log-tea {
+    width: 450px;
+}
+
+.user-img {
+    width: 120px;
+    height: 120px;
+    margin-top: 40px;
+
+}
+
+.user-img-container {
+    height: 175px;
+}
+
+p {
+    margin-bottom: 0px;
+    font: bold;
+}
+
+.datos {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+}
+
+.btn {
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+    border-radius: 8px;
+    font-family: Arial;
+    color: white;
+    font-size: 12px;
+    background: #1f2550;
+    padding: 6px 23px 6px 23px;
+    text-decoration: none;
+  }
+  
+.btn:hover {
+    text-decoration: none;
+}
+
+.bio {
+    height: 100px;
+}
+
+.frase-bio {
+    margin-top: 40px;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.logros-container {
+    margin-top: 20px;
+    text-align: center;
+    height: 60px;
+    margin-top: 10px;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.logros-img-container {
+    text-align: center;
+}
+
+.shit {
+    color: #c4d5f6;
+}
+
+.jugadores-img {
+    margin-top: 30px;
+    width: 40px;
+    height: 40px;
+} */

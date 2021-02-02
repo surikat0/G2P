@@ -1,0 +1,42 @@
+.secondary1{
+    background-color: #171c3e;
+}
+.secondary2{
+    background-color: #0d153d;
+}
+.flex {
+    display: flex;
+}
+.wt{
+    color: white;
+}
+.mg{
+    margin-left: 160px;
+    margin-top: 70px;
+}
+.logo{
+    width: 250px ;
+    height: 250px ;
+    margin-left: 20px;
+}
+.but1{
+    height: 50px;
+    width: 250px;
+    color: white;
+    background-color: #ff09d6;
+}
+
+.pt{
+    color:  #0d153d;
+}
+
+h5:hover{
+    animation: bounce 1s;
+}
+
+img:hover{
+    animation: pulse 1s;
+}
+.top{
+    margin-top: 50px;
+}

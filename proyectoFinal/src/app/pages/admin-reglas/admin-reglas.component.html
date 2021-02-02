@@ -1,0 +1,208 @@
+<!--Start payment-history area -->
+<div class="payment-history-area bg-color area-padding top-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <h3>Reglas</h3>
+          <p>Lista de Reglas de G2P</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="deposite-content">
+          <div class="diposite-box">
+            <div class="deposite-table">
+              <table>
+                <tr>
+                  <th>#</th>
+                  <th>Modo de juego</th>
+                  <th>Juego</th>
+                  <th>Descripcion de regla</th>
+                  <th>Modificar</th>
+                </tr>
+                <tr *ngFor="let rulesall of rulesall; let i = index">
+                  <td id="getid" value="{{i}}">{{i+1}}</td>
+                  <td>{{rulesall.modo}}</td>
+                  <td>{{rulesall.juego_id}}</td>
+                  <td>
+                    <a data-toggle="modal" data-target="#rulesModal" class="btn-primary uppercase"
+                      (click)="getData(i)">ver regla</a>
+                  </td>
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal" class="edit-user" (click)="getEdit(i)">
+                      <i class="fa fa-edit fa-lg"></i>
+                  </a> &nbsp;&nbsp;
+                  <a data-toggle="modal" data-target="#deleteModal" class="delete-user" (click)="getDelete(i)">
+                      <i class="fa fa-trash fa-lg"></i>
+                  </a>
+                  </td>
+                </tr>
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="top-margin"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <a class="s-menu-crear" data-toggle="modal" data-target="#nuevaRegla">Crear regla</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="nuevaRegla" tabindex="-1" role="dialog" aria-labelledby="nuevaReglaLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nuevaReglaLabel">CREAR REGLA</h5>
+        <button type="button" class="close" #addRule data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #modeodejuego>
+              <option value="">Modo de juego</option>
+              <option *ngFor="let games of modojuego; let i = index" [value]="games">
+                {{games}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #juegostotal>
+              <option value="0">Seleccionar juego</option>
+              <option *ngFor="let alljuegos of listajuegos; let i = index" [value]="i+1">
+                {{alljuegos}}
+              </option>
+
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" placeholder="Descripcion de regla" id="descripcionregla"
+              style="height: 100px" #descripcionregla></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-cancel" data-dismiss="modal" aria-label="Close">CANCELAR</a>
+        <a class="s-menu-mobile-register" data-dismiss="modal" aria-label="Close"
+          (click)="addRules(modeodejuego.value, juegostotal.value, descripcionregla.value)">GUARDAR</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" 
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">ELIMINAR</h5>
+        <button type="button" class="close" #deleteRules data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p>¿Desea eliminar la regla de <b>{{rulesall[indexDelete].juego_id}} {{rulesall[indexDelete].modo}}</b>?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-register" (click)="deleteRule(rulesall[indexDelete].reglas_id, indexDelete)">ELIMINAR</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">EDITAR REGLA</h5>
+        <button type="button" class="close" #editeRules data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <div class="form-group" style="display:none">
+
+              <input type="text" class="form-control" id="reglas_idEdit"
+                  placeholder="G2P Regla ID" value="{{rulesall[indexEdit].reglas_id}}" #reglas_id>
+          </div>
+            <select name="country" class="form-control selectpicker" #tipojuego>
+              <option value="{{rulesall[indexEdit].modo}}">{{rulesall[indexEdit].modo}}</option>
+              <option *ngFor="let games of modojuego; let i = index" [value]="games">
+                {{games}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #allgames>
+              <option value="">{{rulesall[indexEdit].juego_id}}</option>
+              <option *ngFor="let alljuegos of listajuegos; let i = index" [value]="i+1">
+                {{alljuegos}}
+              </option>
+
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" placeholder="{{rulesall[indexEdit].descripcion}}" id="detalleregla" #detalleregla
+              style="height: 100px">{{rulesall[indexEdit].descripcion}}</textarea>
+          </div> 
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-cancel" data-dismiss="modal" aria-label="Close">CANCELAR</a>
+        <a class="s-menu-mobile-register" data-dismiss="modal" aria-label="Close" (click)="editUser(indexEdit, reglas_id.value, tipojuego.value, allgames.value, detalleregla.value)">EDITAR</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" *ngIf="rulesall != null"  id="rulesModal" tabindex="-1" role="dialog" aria-labelledby="rulesModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rulesModalLabel">REGLAS DE {{rulesall[myIndex].juego_id}} {{rulesall[myIndex].modo}}
+        </h5>
+        <button type="button" class="close" #deleteAdmin data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="uncrip" [innerHTML]="innerHTML">
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-register" data-dismiss="modal" aria-label="Close">CERRAR</a>
+      </div>
+    </div>
+  </div>
+</div>

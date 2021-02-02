@@ -1,0 +1,149 @@
+<!--Start payment-history area -->
+<!-- Nuevo: se agregaron los detalles del partido -->
+
+<!-- <div class="protesta">PROTESTA</div> -->
+<div class="top-margin">
+  <div class="row padding-detalle">
+    <div *ngIf="partido" class="col-lg-12" style="margin-bottom: 80px">
+      <div class="container-partido">
+        <div class="detalle-partido">
+          <div class="detalle-equipo ">
+            <span class="title-equipo">{{ partido.nombre_first }}</span>
+
+            <div class="detalle-perfil">
+              <a (click)="goPerfilTeam(partido.equipo_first)"
+                ><img class="image-detalle" src="{{partido.logo_first}}" width="250px"
+              /></a>
+            </div>
+          </div>
+          <div class="detalle-vs">
+            <p class="text-center vs">VS</p>
+            <!-- <div class="detalle-partido-resultado">1 - 0</div> -->
+          </div>
+          <div class="detalle-equipo">
+            <span class="title-equipo">{{ partido.nombre_second }}</span>
+
+            <div class="detalle-perfil">
+              <a (click)="goPerfilTeam(partido.equipo_second)"
+                ><img class="image-detalle" src="{{partido.logo_second}}"
+              /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalle-equipo">
+        <div class="detalle-resultado">
+          <span class="first">{{ partido.resultado_first }}</span>
+          <span class="separator">:</span>
+          <span class="second">{{ partido.resultado_second }}</span>
+          
+        </div>
+        
+      </div>
+       <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+    margin-bottom: 40px;
+    width: 300px;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 40px;
+    border-radius: 7px 7px 7px 7px;
+    border: 2px solid #171c3e;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+    color: #fff;
+              " (click)="goBack()" ><i class="fa fa-chevron-circle-left"></i> <span _ngcontent-snb-c79="" style="
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 600;
+">VOLVER ATRAS</span>
+
+          </div>
+      <div *ngIf="ver && partido.finalizado === 0; else resultado">
+        <div class="row">
+          <div class="col-lg-12">
+            <div
+              class="detalle-equipo"
+              style="margin: 50px; justify-content: center; text-align: center"
+            >
+              <div
+                class="xddddd"
+                style="display: flex; justify-content: center"
+              >
+                <input
+                  class="form-control input-resultado"
+                  [(ngModel)]="partido.resultado_first"
+                  type="text"
+                  style="
+                    border: 1px solid #ff09d6;
+                    background-color: #0d112c;
+                    width: 100px;
+                  "
+                />
+                <span class="separator" style="margin: 5px 24px 5px 20px"
+                  >:</span
+                >
+                <input
+                  class="form-control input-resultado"
+                  [(ngModel)]="partido.resultado_second"
+                  type="text"
+                  style="
+                    border: 1px solid #ff09d6;
+                    background-color: #0d112c;
+                    width: 100px;
+                  "
+                />
+              </div>
+              <div class="newwww">
+                <button
+                  class="but-ok"
+                  (click)="guardarPartido()"
+                  style="float: none; margin-top: 20px"
+                >
+                  Guardar Resultado
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #resultado>
+          <div class="detalle-equipo">
+            <div class="detalle-resultado">
+              <span class="first">{{ partido.resultado_first }}</span>
+              <span class="separator">:</span>
+              <span class="second">{{ partido.resultado_second }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+        
+
+
+      <!-- <div class="col-lg-5 full-height ">
+        <div class="detalle-partido-chat">
+        <div class="foro-chat ">
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           CHAT O FORO
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>
+
+        </div>
+    </div></div> -->
+    </div>
+  </div>
+</div>

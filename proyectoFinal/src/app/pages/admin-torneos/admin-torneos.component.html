@@ -1,0 +1,389 @@
+<!--Start payment-history area -->
+<div class="payment-history-area bg-color area-padding top-margin">
+  <div class="container container-torneos">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <h3>Torneos</h3>
+          <p>Lista de Torneos de G2P</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div _ngcontent-pcx-c63="" class="deposite-content" style="width: 100%">
+          <div class="diposite-box">
+            <div class="deposite-table">
+              <table>
+                <tr>
+                  <th>#</th>
+                  <th>Torneo</th>
+                  <th>Juego</th>
+                  <th>Participantes</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Premio</th>
+                  <th>Reglas</th>
+                  <th>Estado</th>
+                  <th>Modificar</th>
+                </tr>
+                <tr *ngFor="let adminTorneos of adminTorneos; let i = index">
+                  <td id="getid" value="{{ i }}">{{ i + 1 }}</td>
+                  <td>
+                    <a (click)="goDetalle(adminTorneos.fases, adminTorneos.torneo_id)">{{
+                      adminTorneos.nombre
+                    }}</a>
+                  </td>
+                  <td>{{ adminTorneos.juego_nombre }}</td>
+                  <td>
+                    <button
+                      class="s-menu-crear"
+                      style="font-size: 14px; padding: 5px; margin: 0px"
+                      (click)="getEquiposTorneos(adminTorneos.torneo_id)"
+                      #seeParti
+                      data-toggle="modal"
+                      data-target="#seeModal"
+                    >
+                      VER PARTICIPANTES
+                    </button>
+                  </td>
+                  <td>{{ adminTorneos.fecha }}</td>
+                  <td>{{ adminTorneos.hora }}</td>
+                  <td>{{ adminTorneos.puntos }}</td>
+                  <td>
+                    {{ adminTorneos.reglas_modo }}
+                  </td>
+                  <td>{{ adminTorneos.estado }}</td>
+                  <td>
+                    <a
+                      data-toggle="modal"
+                      data-target="#editModal"
+                      class="edit-user"
+                      (click)="getEdit(i)"
+                      ><i class="fa fa-edit fa-lg"></i
+                    ></a>
+                    &nbsp;&nbsp;
+                    <a
+                      data-toggle="modal"
+                      data-target="#deleteModal"
+                      class="delete-user"
+                      (click)="getDelete(i)"
+                      ><i class="fa fa-trash fa-lg"></i
+                    ></a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="section-headline text-center">
+        <a class="s-menu-crear" data-toggle="modal" data-target="#nuevoTorneo"
+          >Crear torneo</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End payment-history area -->
+<!-- MODAL EDIT -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+  #editeTorneo
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title uppercase" id="editModalLabel">EDITAR Torneo</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="{{adminTorneos[indexEdit].nombre}}" [value]="adminTorneos[indexEdit].nombre" #editName
+            />
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #editJuego>
+              <option value="{{adminTorneos[indexEdit].juego_id}}">{{adminTorneos[indexEdit].juego_nombre}}</option>
+              <option
+                [value]="juegos.juego_id"
+                *ngFor="let juegos of juegos; let i = index"
+              >
+                {{ juegos.juego_nombre }} 
+              </option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Participantes"
+              aria-label="Jugadores"
+              aria-describedby="basic-addon2"
+            />
+            <span class="input-group-text" id="basic-addon2">+</span>
+          </div>
+
+          <div class="form-group">
+            <input type="date" class="form-control" value="{{adminTorneos[indexEdit].fecha}}" #editFecha />
+          </div>
+          <div class="form-group">
+            <input type="time" class="form-control" value="{{adminTorneos[indexEdit].hora}}"  #editHora/>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="{{adminTorneos[indexEdit].puntos}}" [value]="adminTorneos[indexEdit].puntos" #editPremio/>
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #editRegla>
+              <option value="{{adminTorneos[indexEdit].reglas_id}}">{{adminTorneos[indexEdit].juego_nombre}} - {{adminTorneos[indexEdit].reglas_modo}}</option>
+              <option
+                [value]="rulesall.reglas_id"
+                *ngFor="let rulesall of rulesall; let i = index"
+              >
+               {{rulesall.nombre_juego}} - {{ rulesall.modo }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #editFase>
+              <option value="{{adminTorneos[indexEdit].fases}}">{{adminTorneos[indexEdit].fases}}</option>
+              <option
+                [value]="fases"
+                *ngFor="let fases of fases; let i = index"
+              >
+                {{ fases }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #editEstado>
+              <option value="{{adminTorneos[indexEdit].estado}}">{{adminTorneos[indexEdit].estado}}</option>
+              <option
+                [value]="estado"
+                *ngFor="let estado of estado; let i = index"
+              >
+                {{ estado }}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-register" (click)="editTorn(indexEdit, adminTorneos[indexEdit].torneo_id, editName.value, editFecha.value, editFase.value, editRegla.value, editJuego.value, editHora.value, editPremio.value, editEstado.value)">EDITAR</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL EDIT -->
+<!-- MODAL VER PARTICIPANTES -->
+<div
+  class="modal fade"
+  id="seeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="seeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title uppercase" id="seeModalLabel">PARTICIPANTES</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #deleteTorneo
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div *ngFor="let participantes of participantes; let i = index">
+            <ol>
+              {{
+                participantes.nombre
+              }}
+            </ol>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-register" data-dismiss="modal">VALE</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DELETE -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title uppercase" id="deleteModalLabel">ELIMINAR</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #deleteTorneo
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p>
+            ¿Desea eliminar el torneo {{ adminTorneos[indexDelete].nombre }}?
+          </p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="s-menu-mobile-register"
+          (click)="deletePar(adminTorneos[indexDelete].torneo_id, indexDelete)"
+          >ELIMINAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL DELETE -->
+<!--  MODAL CREAR TORNEO -->
+<div
+  class="modal fade"
+  id="nuevoTorneo"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title uppercase" id="editModalLabel">Crear Torneo</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #addTorneo
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nombre del torneo"
+              #newname
+            />
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #newgame>
+              <option value="0">Seleccionar juego</option>
+              <option
+                [value]="juegos.juego_id"
+                *ngFor="let juegos of juegos; let i = index"
+              >
+                {{ juegos.juego_nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control"
+              placeholder="Fecha"
+              #newfecha
+            />
+          </div>
+          <div class="form-group">
+            <input type="time" class="form-control" #newhora />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Puntos de premio"
+              #newpuntos
+            />
+          </div>
+
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #newregla>
+              <option value="0">Seleccionar regla</option>
+              <option
+                [value]="rulesall.reglas_id"
+                *ngFor="let rulesall of rulesall; let i = index"
+              >
+              {{rulesall.nombre_juego}} - {{ rulesall.modo }}
+
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #newfase>
+              <option value="0">Seleccionar fase</option>
+              <option
+                [value]="fases"
+                *ngFor="let fases of fases; let i = index"
+              >
+                {{ fases }}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="s-menu-mobile-register"
+          (click)="
+            addTour(
+              newname.value,
+              newfecha.value,
+              newfase.value,
+              newregla.value,
+              newgame.value,
+              newhora.value,
+              newpuntos.value
+            )
+          "
+          >CREAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

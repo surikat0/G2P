@@ -1,0 +1,309 @@
+<div class="top-margin"></div>
+
+<div class="container px-4">
+  <div class="row gx-5 center-all" style="justify-content: center">
+    <div class="col-lg-12 d-flex justify-content-center">
+      <div
+        class="p-3 bg-dark"
+        style="
+          margin-right: 20px;
+          margin-bottom: 20px;
+          letter-spacing: 3px;
+          width:75%;
+          border-radius: 7px 7px 7px 7px;
+          border: 2px solid #171c3e;
+          box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+          color: #fff;
+        "
+      >
+        <span
+          _ngcontent-snb-c79=""
+          style="padding-left: 20px; font-size: 16px; font-weight: bolder"
+          >PERFIL DE EQUIPO</span
+        >
+      </div>
+    </div> 
+    <div class="col-lg-4 col-sm-11 col-xs-3">
+      <div class="row">
+      
+        <div class="col-lg-12 box-1">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e; /* margin: 10px 60px 10px 60px; */
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+            "
+          >
+            <div class="contenedor-perfil">
+              <img class="image-perfil-user" src="{{ equipo.logo }}" />
+              <div class="title-perfil-user">
+                {{ equipo.nombre }}
+              </div>
+              <p>{{ equipo.capitan }}</p>
+              <div
+                class="button-editar-perfil"
+                data-toggle="modal"
+                data-target="#editTeamModal"
+                *ngIf="showEdit"
+              >
+                editar equipo&nbsp;&nbsp;<i
+                  class="fa fa-edit fa-lg"
+                  style="float: right; margin-top: 3px"
+                ></i>
+              </div>
+
+              <div class="title-description-user">SOBRE EL EQUIPO</div>
+              <p>{{ equipo.biografia }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e;
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+              cursor: pointer;
+              color: #fff;
+            "
+            (click)="goBack()"
+          >
+            <i class="fa fa-chevron-circle-left"></i>
+            <span
+              _ngcontent-snb-c79=""
+              style="padding-left: 20px; font-size: 14px; font-weight: 600"
+              >VOLVER ATRAS</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5 col-sm-11 col-xs-3">
+      <div class="row">
+        <div class="col-lg-12 box-1">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e; /* margin: 10px 60px 10px 60px; */
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+            "
+          >
+            <div class="container-diferent">
+              <div class="title-stadics">JUGADORES</div>
+
+              <div class="contenedor-stadics">
+                <div class="container d-flex justify-content-center">
+                  <div class="row align-items-start">
+                    <div
+                      class="col"
+                      *ngFor="let jugadores of jugadores; let i = index"
+                    >
+                      <a
+                        (click)="goPerfil(jugadores.nickname)"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="@{{ jugadores.nickname }}"
+                      >
+                        <img
+                          class="equipo-pertenece-imagen"
+                          src="{{ jugadores.url_perfil }}"
+                      /></a>
+                    </div>
+                    <p *ngIf="jugadores.length === 0">Este equipo no tiene jugadores</p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div
+            class="p-3 bg-dark"
+            style="
+              margin-right: 20px;
+              margin-bottom: 40px;
+              border-radius: 7px 7px 7px 7px;
+              border: 2px solid #171c3e; /* margin: 10px 60px 10px 60px; */
+              box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.7);
+            "
+          >
+            <div class="container-diferent">
+              <div class="title-stadics">ESTADISTICAS</div>
+
+              <canvas
+                baseChart
+                width="50%"
+                [datasets]="pieChartData"
+                [labels]="pieChartLabels"
+                [options]="pieChartOptions"
+                [colors]="pieChartColors"
+                [chartType]="pieChartType"
+                [plugins]="pieChartPlugins"
+              ></canvas>
+              <button #gChart (click)="shuffeData()" style="display: none">
+                hola
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  EDITAR USER -->
+<!--  GESTIONAR EQUIPO -->
+<!--  EDITAR USER -->
+<div
+  class="modal fade"
+  id="editTeamModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editTeamModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTeamModalLabel">EDITAR PERFIL</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #closeEdit
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <div class="inputfile-box">
+              <input
+                type="file"
+                id="file"
+                class="inputfile"
+                aria-describedby="upload-photo"
+                aria-label="Upload"
+                name="avatar"
+                (change)="fileChange($event)"
+                placeholder="Actualiza tu foto"
+                #uploadfoto
+              />
+              <label for="file" style="width: 100%">
+                <span id="file-name" class="file-box">{{ msg2 }}</span>
+                <span class="file-button">
+                  <i class="fa fa-upload" aria-hidden="true"></i>
+                  Select File
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="recipient-name"
+              placeholder="{{equipo.nombre}}"
+              #nombre
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">-</span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Jugadores"
+              aria-label="Jugadores"
+              aria-describedby="basic-addon2"
+            />
+            <span class="input-group-text" id="basic-addon2">+</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleTextarea">Biografía</label>
+            <textarea
+              class="form-control"
+            placeholder="{{equipo.biografia}}"
+              #biografia
+            >{{equipo.biografia}}</textarea>
+          </div>
+                                 
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="but-cancel"
+          data-toggle="modal"
+          data-target="#deleteUserModal"
+          >BORRAR</a
+        >
+        <a
+          class="but-ok"
+          (click)="
+            editarEquipo(equipo.equipo_id, nombre.value, biografia.value)
+          "
+          >ACEPTAR</a
+        >
+      </div>
+      <!-- <div class="modal-footer">
+                <a class="s-menu-mobile-register" data-dismiss="modal">Aceptar</a>
+                <a class="s-menu-mobile-register" data-dismiss="modal">Borrar</a>
+            </div> -->
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="deleteUserModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteUserModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">
+          Eliminar {{ equipo.nombre }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          #closeDelete
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          ¿Estas seguro que deseas eliminar tu equipo?
+          <p style="color: #fff">
+            {{ equipo.nombre }} al hacer clic en <b>ELIMINAR</b> tu
+            equipo se eliminara por completo
+          </p>
+        </div>
+        <div class="modal-footer">
+          <a
+            class="but-ok"
+            (click)="borrarEquipo(equipo.equipo_id)"
+            >ELIMINAR</a
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

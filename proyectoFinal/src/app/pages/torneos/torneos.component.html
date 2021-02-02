@@ -1,0 +1,387 @@
+<!-- <app-header></app-header> -->
+<!-- #0d1234 -->
+<div class="top-margin"></div>
+
+<div class="position-relative overflow-hidden">
+  <div class="row ">
+    <div class="col-xl-8 secondary1 animate__animated animate__bounceInLeft justify-content-center">
+
+      <div class="row ">
+        <div class="col-md-12">
+          <div class="busqueda">
+            <span id="title-copa">
+              <i class="fas fa-trophy"></i>&nbsp;TORNEOS {{anio}}</span>
+            <div class="float-busqueda">
+              <label class="filter-labels">JUEGOS:</label>
+              <select class="form-control-busqueda selectpicker" #juegotorneo id="juego">
+                <option value="all" selected="">TODAS</option>
+                <option [value]="juegos.juego_id" *ngFor="let juegos of juegos; let i = index">
+                  {{ juegos.juego_nombre }}
+                </option>
+              </select><label class="filter-labels">ESTADO:</label>
+              <select class="form-control-busqueda selectpicker" #estadojuego id="estado">
+                <option value="all">TODAS</option>
+                <option [value]="estado" *ngFor="let estado of estado; let i = index">
+                  {{ estado }}
+                </option>
+
+              </select>
+              <a style="margin-left: 10px;border: 1px solid #171c3e;padding: 5px;padding: 5px 10px;border-radius: 4px;color: #fff;"
+                (click)="search(juegotorneo.value, estadojuego.value)"><i class="fas fa-search fa-xs"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center text-center">
+
+        <div class="col-12" *ngIf="torneosList.length === 0">
+          <img src="assets/images/404.png" class="animate__animated animate__backInDown"
+            style="margin: 80px 0px 40px 0px; width:250px">
+          <p class="animate__animated animate__backInUp" style="
+          font-size: 30px;
+          font-weight: 600;
+          color: #fff;
+      ">NO SE HAN ENCONTRADO RESULTADOS</p>
+        </div>
+         
+        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-8" *ngFor="let torneosList of torneosList; let i = index">
+          <div class="hover01 card card1 bg-dark">
+              <figure>
+                <img src="{{ torneosList.logo_juego }}" class="card-img-top" alt="..." />
+                <span style="
+                    position: absolute;
+                    left: 0px;
+                    top: 20px;
+                    background-color: #0b0f2c;
+                    padding: 10px;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    border-right: 2px solid #171c3e;
+                    border-bottom: 2px solid #171c3e;
+                    border-top: 2px solid #171c3e;
+                  ">{{ torneosList.modo_regla }}</span>
+              </figure>
+
+            <h5 class="title-card one-edge-shadow" [ngStyle]="{'background-color':getColor(torneosList.estado)}">
+              {{ torneosList.estado }}
+            </h5>
+            <div class="card-body bg-dark">
+              <div class="card-description">
+                {{torneosList.nombre}}
+                <p class="wt card-text">
+                  Premio : <br /><i class="fas fa-award"></i>&nbsp;{{
+                  torneosList.puntos
+                  }}
+                  puntos
+                </p>
+                <p class="wt card-text">
+                  Fecha: <br /><i class="far fa-calendar-alt"></i> &nbsp;{{
+                  torneosList.fecha
+                  }}
+                  <br /><i class="fas fa-clock"></i> &nbsp;{{ torneosList.hora }}
+                </p>
+              </div>
+              <div class="botones">
+                <a class="btn but1" *ngIf="torneosList.estado === 'ACTIVO'" id="apuntate"
+                  (click)="setTorneoInfo(torneosList.torneo_id, torneosList.fases)">Apúntate</a>
+                <a class="btn but1" *ngIf="torneosList.estado === 'FINALIZADO' || torneosList.estado === 'PENDIENTE'"
+                  (click)="goTorneoDetalle(torneosList.fases, torneosList.torneo_id)">VER RESULTADOS</a>
+                <a class="btn but2" (click)="getData(i)" data-toggle="modal" data-target="#reglasModal">Reglas</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 col-xl-4 col-md-12 col-xl-4 secondary2" style="padding-left: 0px">
+      <div class="secondary2">
+        <div class="ranking-torneo one-edge-shadow">
+          <h1 class="text-center title-ranking">
+            <i class="fa fa-medal fa-lg"></i> RANKING
+            <i class="fa fa-medal fa-lg"></i>
+          </h1>
+        </div>
+        <!-- <div class="games-logo">
+          <div class="cuerpo-logo">
+            <img type="button" id="clickranking" class="logo-ranking" (click)="fifa=false" (click)="lol=true" [src]="lolLogo">
+          </div>
+          <div class="cuerpo-logo">
+            <img type="button" id="clickranking" class="logo-ranking" (click)="fifa=true" (click)="lol=false" [src]="fifaLogo">
+          </div>
+        </div> -->
+      </div>
+      <div *ngIf="team === false" class="l-wrapper animate__animated animate__backInRight">
+        <div class="l-grid">
+          <div class="l-grid__item">
+            <div class="c-card" *ngIf="userlogin">
+              <div class="c-card__body">
+                <div class="u-display--flex u-justify--space-between">
+                  <div class="u-text--left">
+                    <div class="u-text--small">Mi Posicion</div>
+                    <h4>#{{ yourNumberTop }}</h4>
+                  </div>
+                  <div class="u-text--right">
+                    <div class="u-text--small">Mis Puntos</div>
+                    <h4>
+                      {{ yourRankTop.puntuacion }}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="c-card">
+              <div class="c-card__body">
+                <div class="u-text--center" id="winner">
+                  <div class="u-text-small u-text--medium u-mb--16">
+                    Jugador TOP de la semana
+                  </div>
+                  <div class="border-media">
+                    <img src="{{ topOne.url_perfil }}" width="80px" />
+                  </div>
+                  <h3 class="u-mt--16 bold">
+                    {{ topOne.nombre }} {{ topOne.apellido }}
+                  </h3>
+                  <a class="c-media__link u-text--small justify-content-center" (click)="goPerfil(topOne.nickname)"
+                    target="_blank">@{{ topOne.nickname }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="c-card">
+              <div class="c-card__header">
+                <h3>TOP 5 - JUGADORES</h3>
+              </div>
+              <div class="c-card__body">
+                <ul class="c-list" id="list">
+                  <li class="c-list__item">
+                    <div class="c-list__grid">
+                      <div class="u-text--left u-text--small u-text--medium">
+                        #
+                      </div>
+                      <div class="u-text--left u-text--small u-text--medium">
+                        <div ng-app="MyApp" ng-controller="lController">
+                          <label class="toggle-checkbox">
+                            <input type="checkbox" ng-model="checkboxInput"
+                              (change)="onItemChange($event.target.checked)" />
+                            <div class="toggle-slider"></div>
+                            <div class="toggle-info toggle-left">
+                              <div class="icon">
+                                <i _ngcontent-pqr-c80="" class="fas fa-user" style="color: #fff"></i>
+                              </div>
+                              <div class="icon-text"></div>
+                            </div>
+                            <div class="toggle-info toggle-right">
+                              <div class="icon">
+                                <i class="fas fa-users"></i>
+                              </div>
+                              <div class="icon-text"></div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="u-text--right u-text--small u-text--medium">
+                        PUNTOS
+                      </div>
+                    </div>
+                  </li>
+                  <li class="c-list__item" *ngFor="let dataTop10 of dataTop10; let i = index">
+                    <div class="c-list__grid">
+                      <div class="c-flag c-place">{{ i + 1 }}</div>
+                      <div class="c-media">
+                        <div class="border-media">
+                          <img class="c-avatar c-media__img" src="{{ dataTop10.url_perfil }}" width="40px" />
+                        </div>
+                        <div class="c-media__content">
+                          <div class="c-media__title float-left">
+                            {{ dataTop10.nombre }} {{ dataTop10.apellido }}
+                          </div>
+                          <a class="c-media__link u-text--small float-left" (click)="goPerfil(dataTop10.nickname)"
+                            target="_blank">
+                            @{{ dataTop10.nickname }}</a>
+                        </div>
+                      </div>
+                      <div class="u-text--right c-kudos">
+                        <div class="u-mt--8">
+                          <strong>{{ dataTop10.puntuacion }}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="team === true" class="l-wrapper animate__animated animate__backInRight">
+        <div class="l-grid">
+          <div class="l-grid__item">
+            <div class="c-card" *ngIf="userlogin">
+              <div class="c-card__body">
+                <p *ngIf="jugadores.length === 0">
+                  Este equipo no tiene jugadores
+                </p>
+                <div class="u-display--flex u-justify--space-between" *ngIf="jugadores.length != 0">
+                  <div class="u-text--left">
+                    <div class="u-text--small">Posicion Equipo</div>
+                    <h4>#{{ yourNumberTopTeam }}</h4>
+                  </div>
+                  <div class="u-text--right">
+                    <div class="u-text--small">Puntuación Equipo</div>
+                    <h4>
+                      {{ yourRankTopTeam.puntuacion }}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="c-card">
+              <div class="c-card__body">
+                <div class="u-text--center" id="winner">
+                  <div class="u-text-small u-text--medium u-mb--16">
+                    Equipo TOP de la semana
+                  </div>
+                  <div class="border-media">
+                    <img src="{{ teamTopOne.logo }}" width="80px" />
+                  </div>
+                  <h3 class="u-mt--16 bold">{{ teamTopOne.nombre }}</h3>
+                  <!-- <a class="c-media__link u-text--small justify-content-center" href="https://instagram.com/carlossainz55"
+                  target="_blank">@{{teamTopOne.}}</a> -->
+                </div>
+              </div>
+            </div>
+            <div class="c-card">
+              <div class="c-card__header">
+                <h3>TOP 5 - EQUIPOS</h3>
+              </div>
+              <div class="c-card__body">
+                <ul class="c-list" id="list">
+                  <li class="c-list__item">
+                    <div class="c-list__grid">
+                      <div class="u-text--left u-text--small u-text--medium">
+                        #
+                      </div>
+                      <div class="u-text--left u-text--small u-text--medium">
+                        <div ng-app="MyApp" ng-controller="lController">
+                          <label class="toggle-checkbox">
+                            <input type="checkbox" ng-model="checkboxInput"
+                              (change)="onItemChange($event.target.checked)" [checked]="true" />
+                            <div class="toggle-slider"></div>
+                            <div class="toggle-info toggle-left">
+                              <div class="icon">
+                                <i _ngcontent-pqr-c80="" class="fas fa-user" style="color: #fff"></i>
+                              </div>
+                              <div class="icon-text"></div>
+                            </div>
+                            <div class="toggle-info toggle-right">
+                              <div class="icon">
+                                <i class="fas fa-users"></i>
+                              </div>
+                              <div class="icon-text"></div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="u-text--right u-text--small u-text--medium">
+                        PUNTOS
+                      </div>
+                    </div>
+                  </li>
+                  <li class="c-list__item" *ngFor="let dataTeamTop5 of dataTeamTop5; let i = index">
+                    <div class="c-list__grid">
+                      <div class="c-flag c-place">{{ i + 1 }}</div>
+                      <div class="c-media">
+                        <div class="border-media">
+                          <img class="c-avatar c-media__img" src="{{ dataTeamTop5.logo }}" width="40px" />
+                        </div>
+                        <div class="c-media__content">
+                          <div class="c-media__title float-left">
+                            {{ dataTeamTop5.nombre }}
+                          </div>
+                          <a class="c-media__link u-text--small float-left"
+                            (click)="goPerfilTeam(dataTeamTop5.equipo_id)" target="_blank">ver equipo</a>
+                        </div>
+                      </div>
+                      <div class="u-text--right c-kudos">
+                        <div class="u-mt--8">
+                          <strong>{{ dataTeamTop5.puntuacion }}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalApuntate" tabindex="-1" role="dialog" aria-labelledby="modalApuntateLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalApuntateLabel">
+          SELECCIONA TU EQUIPO FAVORITO
+        </h5>
+        <button type="button" class="close" id="cerrarApuntate1" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Tus equipos</label>
+          <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="equipoId">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let item of misEquipoList" [value]="item.equipo_id">
+              {{item.nombre}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="but-cancel uppercase" id="cerrarApuntate" data-dismiss="modal" aria-label="Close">
+          Cancelar
+        </button>
+        <button type="button" class="but-ok uppercase" (click)="setEquipoTorneo()">
+          Apuntar equipo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="reglasModal" tabindex="-1" role="dialog" aria-labelledby="reglasModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title uppercase" id="reglasModalLabel">
+          Reglas de {{torneosList[myIndex].juego_nombre}} - {{torneosList[myIndex].modo_regla}}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="uncrip" [innerHTML]="innerHTML">
+
+        <div class="form-group">
+          <p>Confirmar que se ha leído las reglas y desea participar</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="but-ok uppercase" data-dismiss="modal">
+          CONFIRMAR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-footer></app-footer> -->
+<script type="text/javascript">
+
+</script>

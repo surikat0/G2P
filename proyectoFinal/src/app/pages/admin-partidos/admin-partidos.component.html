@@ -1,0 +1,514 @@
+<!--Start payment-history area -->
+<div class="payment-history-area bg-color area-padding top-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <h3>PARTIDOS</h3>
+          <p>Lista de partidos G2P</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="deposite-content">
+          <div class="diposite-box">
+            <div class="deposite-table">
+              <table>
+                <tr>
+                  <th>#</th>
+                  <th>Torneo</th>
+                  <th>JUGADORES</th>
+                  <th>Juegos</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Resultado</th>
+                  <th>Modificar</th>
+                </tr>
+                <tr *ngFor="let adminPartidos of adminPartidos; let i = index">
+                  <td id="getid" value="{{ i }}">{{ i + 1 }}</td>
+                  <td>
+                    <a (click)="goDetalle(adminPartidos.fases, adminPartidos.torneo_id)">{{
+                      adminPartidos.torneo_nombre
+                    }}</a>
+                  </td>
+                  <td>
+                    <a (click)="goPerfilTeam(adminPartidos.equipo_first)">
+                      <img
+                        src="{{ adminPartidos.logo_first }}"
+                        width="40px"
+                        heigth="40px"
+                        alt=""
+                      />
+                    </a>
+                    <a (click)="goPartido(adminPartidos.partido_id)">  VS</a>
+                    <a (click)="goPerfilTeam(adminPartidos.equipo_second)">
+                      <img
+                        src="{{ adminPartidos.logo_second }}"
+                        width="40px"
+                        heigth="40px"
+                        alt=""
+                    /></a>
+                  </td>
+                  <td>{{ adminPartidos.juego_nombre }}</td>
+                  <td>{{ adminPartidos.fecha }}</td>
+                  <td>{{ adminPartidos.hora }}</td>
+                  <td>
+                    {{ adminPartidos.resultado_first }} -
+                    {{ adminPartidos.resultado_second }}
+                  </td>
+                  <td>
+                    <a
+                      data-toggle="modal"
+                      data-target="#editModal"
+                      class="edit-user"
+                      (click)="getEdit(i)"
+                      ><i class="fa fa-edit fa-lg"></i
+                    ></a>
+                    &nbsp;&nbsp;
+                    <a
+                      data-toggle="modal"
+                      data-target="#deleteModal"
+                      class="delete-user"
+                      (click)="getDelete(i)"
+                      ><i class="fa fa-trash fa-lg"></i
+                    ></a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="top-margin"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <a
+            class="s-menu-crear"
+            data-toggle="modal"
+            data-target="#nuevoPartido"
+            >Crear partido
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End payment-history area -->
+<!-- MODAL EDIT -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">EDITAR PARTIDO</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #editePartido
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="{{
+                    adminPartidos[indexEdit].nombre_equipo_first
+                  }}"
+                  aria-label="Jugadores"
+                  [ngClass]="{
+                    'is-invalid': msge1 != '',
+                    'is-valid': msg2e1 != ''
+                  }"
+                  #equipo1
+                />
+                <span
+                  class="input-group-text"
+                  id="basic-addon2"
+                  (click)="verificare1(equipo1.value)"
+                  >+</span
+                >
+                <div
+                  [innerHtml]="msge1"
+                  *ngIf="msge1"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #dc3545"
+                ></div>
+                <div
+                  [innerHtml]="msg2e1"
+                  *ngIf="msg2e1"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #28a745"
+                ></div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+              <p class="vs-admin">VS</p>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="{{
+                    adminPartidos[indexEdit].nombre_equipo_second
+                  }}"
+                  aria-label="Jugadores"
+                  [ngClass]="{
+                    'is-invalid': msge2 != '',
+                    'is-valid': msg2e2 != ''
+                  }"
+                  aria-describedby="basic-addon2"
+                  #equipo2
+                />
+                <span
+                  class="input-group-text"
+                  id="basic-addon2"
+                  (click)="verificare2(equipo2.value)"
+                  >+</span
+                >
+                <div
+                  [innerHtml]="msge2"
+                  *ngIf="msge2"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #dc3545"
+                ></div>
+                <div
+                  [innerHtml]="msg2e2"
+                  *ngIf="msg2e2"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #28a745"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+            <select class="form-control" ng-model="useredit.juegos" name="juegos" data-ng-options="juegos as juegos.nombre for juegos in juegos track by juegos.juego_id" required>
+            </select>
+          </div> -->
+          <div class="form-group">
+            <select class="form-control" name="miselect" #juego>
+              <option [value]="adminPartidos[indexEdit].juego_id">
+                {{ adminPartidos[indexEdit].juego_nombre }}
+              </option>
+              <option [value]="juegos.juego_id" *ngFor="let juegos of juegos">
+                {{ juegos.juego_nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  placeholder=""
+                  data-date=""
+                  data-date-format="DD/MM/YYYY"
+                  value="{{ adminPartidos[indexEdit].fecha }}"
+                  #fecha
+                />
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="time"
+                  class="form-control"
+                  placeholder=""
+                  value="{{ adminPartidos[indexEdit].hora }}"
+                  #hora
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="{{ adminPartidos[indexEdit].resultado_first }}"
+                  aria-label="Jugadores"
+                  aria-describedby="basic-addon2"
+                  #resultado1
+                />
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+              <p class="vs-admin">:</p>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="{{ adminPartidos[indexEdit].resultado_second }}"
+                  aria-label="Jugadores"
+                  aria-describedby="basic-addon2"
+                  #resultado2
+                />
+              </div>
+            </div>
+          </div>
+
+          <textarea
+            class="form-control"
+            placeholder="{{ adminPartidos[indexEdit].comentario }}"
+            style="height: 100px"
+            #comentarios
+          ></textarea>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-cancel">CANCELAR</a>
+        <a
+          class="s-menu-mobile-register"
+          (click)="
+            editPar(
+              indexEdit,
+              adminPartidos[indexEdit].partido_id,
+              saveEquipo1,
+              saveEquipo2,
+              juego.value,
+              fecha.value,
+              hora.value,
+              resultado1.value,
+              resultado2.value,
+              comentarios.value
+            )
+          "
+          >EDITAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL EDIT -->
+<!-- MODAL DELETE -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">ELIMINAR PARTIDO</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #deletePartido
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p>
+            ¿Desea eliminar el partido de
+            {{ adminPartidos[indexDelete].nombre_equipo_first }} vs
+            {{ adminPartidos[indexDelete].nombre_equipo_second }}?
+          </p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="s-menu-mobile-register"
+          (click)="
+            deletePar(adminPartidos[indexDelete].partido_id, indexDelete)
+          "
+          >ELIMINAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL DELETE -->
+<!--Modal CREAR-->
+<div
+  class="modal fade"
+  id="nuevoPartido"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">CREAR PARTIDO</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #addPartidos
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Equipo - 1"
+                  aria-label="Jugadores"
+                  [ngClass]="{
+                    'is-invalid': msge1 != '',
+                    'is-valid': msg2e1 != ''
+                  }"
+                  #newEquipo1
+                />
+                <span
+                  class="input-group-text"
+                  id="basic-addon2"
+                  (click)="verificare1(newEquipo1.value)"
+                  >+</span
+                >
+                <div
+                  [innerHtml]="msge1"
+                  *ngIf="msge1"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #dc3545"
+                ></div>
+                <div
+                  [innerHtml]="msg2e1"
+                  *ngIf="msg2e1"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #28a745"
+                ></div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+              <p class="vs-admin">VS</p>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Equipo - 2"
+                  aria-label="Jugadores"
+                  [ngClass]="{
+                    'is-invalid': msge2 != '',
+                    'is-valid': msg2e2 != ''
+                  }"
+                  aria-describedby="basic-addon2"
+                  #newEquipo2
+                />
+                <span
+                  class="input-group-text"
+                  id="basic-addon2"
+                  (click)="verificare2(newEquipo2.value)"
+                  >+</span
+                >
+                <div
+                  [innerHtml]="msge2"
+                  *ngIf="msge2"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #dc3545"
+                ></div>
+                <div
+                  [innerHtml]="msg2e2"
+                  *ngIf="msg2e2"
+                  style="margin-top: 0.25rem; font-size: 80%; color: #28a745"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="miselect-one" #newjuego>
+              <option [value]="0">Selecciona un juego</option>
+              <option [value]="item.juego_id" *ngFor="let item of juegos">
+                {{ item.juego_nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="miselect-two" #newtorneo>
+              <option [value]="0">Selecciona un torneo</option>
+
+              <option [value]="torneo.torneo_id" *ngFor="let torneo of torneos">
+                {{ torneo.nombre }} [ {{ torneo.estado }} ]
+              </option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  placeholder=""
+                  data-date=""
+                  data-date-format="DD/MM/YYYY"
+                  #newfecha
+                />
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="time"
+                  class="form-control"
+                  placeholder=""
+                  #newhora
+                />
+              </div>
+            </div>
+            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12">
+              <div class="form-group">
+                <textarea
+                  class="form-control"
+                  placeholder="{{ adminPartidos[indexEdit].comentario }}"
+                  style="height: 100px"
+                  #newcomentarios
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="s-menu-mobile-register"
+          (click)="
+            addPartido(
+              saveEquipo1,
+              saveEquipo2,
+              newjuego.value,
+              newtorneo.value,
+              newfecha.value,
+              newhora.value,
+              newcomentarios.value
+            )
+          "
+          >CREAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

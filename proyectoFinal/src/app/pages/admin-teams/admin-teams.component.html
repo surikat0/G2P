@@ -1,0 +1,213 @@
+<!--Start payment-history area -->
+<div class="payment-history-area bg-color area-padding top-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="section-headline text-center">
+          <h3>Equipos</h3>
+          <p>Lista de Equipos de G2P</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="deposite-content">
+          <div class="diposite-box">
+            <div class="deposite-table">
+              <table>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Juego</th>
+                  <th>Capitan</th>
+                  <th>Ganadas</th>
+                  <th>Perdidas</th>
+                  <th>Jugadas</th>
+                  <th>Modificar</th>
+                </tr>
+                <tr *ngFor="let adminTeams of adminTeams; let i = index">
+                  <td id="getid" value="{{ i }}">{{ i + 1 }}</td>
+                  <td>
+                    <a (click)="goPerfil(adminTeams.equipo_id)">
+                      <img
+                        src="{{ adminTeams.logo }}"
+                        width="40px"
+                        heigth="40px"
+                        alt=""
+                      />{{ adminTeams.nombre }}</a
+                    >
+                  </td>
+                  <td>{{ adminTeams.juego_nombre }}</td>
+                  <td>{{ adminTeams.nickname_capitan }}</td>
+                  <td>{{ adminTeams.ganadas }}</td>
+                  <td>{{ adminTeams.perdidas }}</td>
+                  <td>{{ adminTeams.jugadas }}</td>
+                  <td>
+                    <a
+                      data-toggle="modal"
+                      data-target="#editModal"
+                      class="edit-user"
+                      (click)="getEdit(i)"
+                      ><i class="fa fa-edit fa-lg"></i
+                    ></a>
+                    &nbsp;&nbsp;
+                    <a
+                      data-toggle="modal"
+                      data-target="#deleteModal"
+                      class="delete-user"
+                      (click)="getDelete(i)"
+                      ><i class="fa fa-trash fa-lg"></i
+                    ></a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End payment-history area -->
+<!-- MODAL EDIT -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">EDITAR EQUIPO</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #editeTeams
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="idname"
+              placeholder="{{ adminTeams[indexEdit].nombre }}"
+              #nombreTeam
+            />
+          </div>
+          <div class="form-group">
+            <select name="country" class="form-control selectpicker" #tipojuego>
+              <option value="{{ adminTeams[indexEdit].juego_id }}">
+                {{ adminTeams[indexEdit].juego_nombre }}
+              </option>
+              <option
+                *ngFor="let games of listajuegos; let i = index"
+                [value]="i + 1"
+              >
+                {{ games }}
+              </option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="ganadas"
+                  placeholder="{{ adminTeams[indexEdit].ganadas }}"
+                  #ganadas
+                />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="perdidas"
+                  placeholder="{{ adminTeams[indexEdit].perdidas }}"
+                  #perdidas
+                />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="jugadas"
+                  placeholder="{{ adminTeams[indexEdit].jugadas }}"
+                  #jugadas
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-cancel" data-dismiss="modal"
+        aria-label="Close">CANCELAR</a>
+        <a
+          class="s-menu-mobile-register"
+          (click)="
+            editTeam(
+                indexEdit,
+              adminTeams[indexEdit].equipo_id,
+              nombreTeam.value,
+              tipojuego.value,
+              ganadas.value,
+              perdidas.value,
+              jugadas.value
+            )
+          "
+          >EDITAR</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL EDIT -->
+<!-- MODAL DELETE -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="margin-top: 0px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">ELIMINAR</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          #deleteTeams
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p>¿Desea eliminar el equipo <b>{{adminTeams[indexDelete].nombre}}</b>?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="s-menu-mobile-register" (click)="deleteTeam(adminTeams[indexDelete].equipo_id, indexDelete)">ELIMINAR</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL DELETE -->
